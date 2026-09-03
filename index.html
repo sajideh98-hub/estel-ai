@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ESTEL AI</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,Tahoma,sans-serif;
+background:#090711;
+color:#fff;
+min-height:100vh;
+}
+.app{
+max-width:600px;
+margin:auto;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+background:linear-gradient(160deg,#0d0918,#151027,#090711);
+}
+header{
+padding:22px 20px 14px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid #29213d;
+}
+.logo{
+font-size:28px;
+font-weight:800;
+letter-spacing:2px;
+}
+.status{
+font-size:12px;
+color:#b9a6ff;
+background:#21183b;
+padding:7px 12px;
+border-radius:20px;
+}
+main{
+flex:1;
+padding:20px;
+overflow:auto;
+}
+.welcome{
+text-align:center;
+margin:30px 0;
+}
+.orb{
+width:90px;
+height:90px;
+margin:auto;
+border-radius:50%;
+background:linear-gradient(135deg,#9b6cff,#4b24a8);
+box-shadow:0 0 40px #6e43d8;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+}
+.welcome h1{margin:20px 0 8px}
+.welcome p{color:#aaa2b8}
+.message{
+padding:14px 16px;
+border-radius:18px;
+margin:12px 0;
+max-width:90%;
+line-height:1.7;
+}
+.user{
+background:#5535a8;
+margin-right:auto;
+}
+.ai{
+background:#1b1727;
+border:1px solid #302943;
+margin-left:auto;
+}
+.tools{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:8px 20px;
+}
+.tool{
+white-space:nowrap;
+border:1px solid #342b49;
+background:#171321;
+color:#ddd;
+padding:10px 14px;
+border-radius:15px;
+}
+.input-area{
+padding:14px 18px 20px;
+border-top:1px solid #29213d;
+background:#0d0a14;
+display:flex;
+gap:10px;
+}
+textarea{
+flex:1;
+resize:none;
+border:1px solid #392d51;
+background:#181321;
+color:#fff;
+border-radius:18px;
+padding:14px;
+font-size:15px;
+outline:none;
+}
+button{
+border:0;
+cursor:pointer;
+}
+.send{
+width:52px;
+height:52px;
+border-radius:17px;
+background:linear-gradient(135deg,#8c5cff,#5429b8);
+color:white;
+font-size:20px;
+}
+.panel{
+display:none;
+position:fixed;
+inset:0;
+background:#0b0811;
+z-index:5;
+padding:25px;
+}
+.panel h2{margin-top:20px}
+.option{
+padding:16px;
+margin:10px 0;
+background:#181321;
+border:1px solid #302943;
+border-radius:15px;
+}
+.close{
+float:left;
+background:#292238;
+color:#fff;
+padding:8px 14px;
+border-radius:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+<div class="logo">ESTEL</div>
+<div class="status">● آنلاین</div>
+</header>
+
+<main id="chat">
+
+<div class="welcome" id="welcome">
+<div class="orb">✦</div>
+<h1>سلام، من ESTEL هستم</h1>
+<p>دستیار هوشمند فارسی و انگلیسی تو</p>
+</div>
+
+</main>
+
+<div class="tools">
+<button class="tool" onclick="quick('یک ایده جدید بهم بده')">✨ ایده</button>
+<button class="tool" onclick="quick('یک متن برای من بنویس')">✍️ نوشتن</button>
+<button class="tool" onclick="quick('اطلاعاتی درباره یک موضوع پیدا کن')">🌐 جستجو</button>
+<button class="tool" onclick="openSettings()">⚙️ تنظیمات</button>
+</div>
+
+<div class="input-area">
+<textarea id="input" rows="1" placeholder="پیامت را برای ESTEL بنویس..."></textarea>
+<button class="send" onclick="sendMessage()">➤</button>
+</div>
+
+</div>
+
+<div class="panel" id="settings">
+<button class="close" onclick="closeSettings()">بستن</button>
+<h2>⚙️ تنظیمات ESTEL</h2>
+
+<div class="option">
+<b>🧠 حافظه</b>
+<p>ESTEL می‌تواند تنظیمات و اطلاعات غیرحساس گفتگو را روی همین دستگاه ذخیره کند.</p>
+</div>
+
+<div class="option">
+<b>🌐 زبان</b>
+<p>فارسی / English</p>
+</div>
+
+<div class="option">
+<b>🔄 به‌روزرسانی</b>
+<p>ساختار برنامه برای اضافه‌شدن قابلیت‌های جدید آماده است.</p>
+</div>
+
+<div class="option">
+<b>🔐 امنیت</b>
+<p>کلیدهای API و اطلاعات خصوصی را داخل این فایل قرار نده.</p>
+</div>
+
+</div>
+
+<script>
+
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+
+function addMessage(text,type){
+
+const div=document.createElement("div");
+div.className="message "+type;
+div.textContent=text;
+
+chat.appendChild(div);
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+function saveMessage(text,type){
+
+let messages=JSON.parse(localStorage.getItem("estel_memory")||"[]");
+
+messages.push({
+text:text,
+type:type,
+time:new Date().toISOString()
+});
+
+if(messages.length>50)
+messages=messages.slice(-50);
+
+localStorage.setItem("estel_memory",JSON.stringify(messages));
+
+}
+
+function sendMessage(){
+
+const text=input.value.trim();
+
+if(!text)return;
+
+document.getElementById("welcome").style.display="none";
+
+addMessage(text,"user");
+saveMessage(text,"user");
+
+input.value="";
+
+setTimeout(()=>{
+
+let answer;
+
+if(/سلام|hello|hi/i.test(text)){
+answer="سلام! من ESTEL هستم ✦ آماده‌ام کمکت کنم.";
+}
+else if(/اسمت|اسم تو|name/i.test(text)){
+answer="اسم من ESTEL است.";
+}
+else if(/فارسی|persian/i.test(text)){
+answer="بله، می‌توانم فارسی صحبت کنم. 🇮🇷";
+}
+else if(/انگلیسی|english/i.test(text)){
+answer="Yes. I can communicate in English too. 🇬🇧";
+}
+else{
+answer="پیامت دریافت شد. هسته‌ی اولیه ESTEL آماده است و در مراحل بعدی می‌توانیم مدل هوش مصنوعی، اینترنت، صدا و قابلیت‌های بیشتری به آن متصل کنیم.";
+}
+
+addMessage(answer,"ai");
+saveMessage(answer,"ai");
+
+},500);
+
+}
+
+function quick(text){
+input.value=text;
+sendMessage();
+}
+
+function openSettings(){
+document.getElementById("settings").style.display="block";
+}
+
+function closeSettings(){
+document.getElementById("settings").style.display="none";
+}
+
+input.addEventListener("keydown",function(e){
+if(e.key==="Enter" && !e.shiftKey){
+e.preventDefault();
+sendMessage();
+}
+});
+
+</script>
+
+</body>
+</html>
