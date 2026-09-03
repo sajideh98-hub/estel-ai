@@ -2,199 +2,922 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ESTEL AI</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-    margin:0;
-    min-height:100vh;
-    font-family:Tahoma, Arial;
-    background:linear-gradient(135deg,#09090b,#1e1b4b);
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+margin:0;
+font-family:Arial,Tahoma,sans-serif;
+background:#090711;
+color:#fff;
+min-height:100vh;
 }
 
-.container{
-    width:92%;
-    max-width:450px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(15px);
-    border-radius:25px;
-    padding:25px;
-    box-shadow:0 0 30px rgba(0,0,0,.5);
+.app{
+max-width:600px;
+margin:auto;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+background:linear-gradient(160deg,#0d0918,#151027,#090711);
+}
+
+header{
+padding:22px 20px 14px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid #29213d;
 }
 
 .logo{
-    text-align:center;
-    font-size:42px;
-    font-weight:bold;
-    color:#c4b5fd;
+font-size:28px;
+font-weight:800;
+letter-spacing:2px;
 }
 
-.subtitle{
-    text-align:center;
-    color:#ddd;
-    margin-bottom:25px;
+.status{
+font-size:12px;
+color:#b9a6ff;
+background:#21183b;
+padding:7px 12px;
+border-radius:20px;
 }
 
-.chat{
-    height:250px;
-    overflow:auto;
-    background:rgba(0,0,0,.25);
-    border-radius:18px;
-    padding:15px;
+main{
+flex:1;
+padding:20px;
+overflow:auto;
 }
+
+.welcome{
+text-align:center;
+margin:30px 0;
+}
+
+.orb{
+width:90px;
+height:90px;
+margin:auto;
+border-radius:50%;
+background:linear-gradient(135deg,#9b6cff,#4b24a8);
+box-shadow:0 0 40px #6e43d8;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+animation:orbPulse 3s ease-in-out infinite;
+}
+
+@keyframes orbPulse{
+0%,100%{transform:scale(1);box-shadow:0 0 40px #6e43d8}
+50%{transform:scale(1.06);box-shadow:0 0 65px #8c5cff}
+}
+
+.welcome h1{margin:20px 0 8px}
+.welcome p{color:#aaa2b8}
 
 .message{
-    padding:10px;
-    margin:8px 0;
-    border-radius:12px;
-}
-
-.bot{
-    background:#312e81;
+padding:14px 16px;
+border-radius:18px;
+margin:12px 0;
+max-width:90%;
+line-height:1.7;
+white-space:pre-wrap;
 }
 
 .user{
-    background:#374151;
+background:#5535a8;
+margin-right:auto;
 }
 
-.input-box{
-    display:flex;
-    gap:8px;
-    margin-top:15px;
+.ai{
+background:#1b1727;
+border:1px solid #302943;
+margin-left:auto;
 }
 
-input{
-    flex:1;
-    padding:14px;
-    border-radius:15px;
-    border:none;
-    outline:none;
-    font-size:15px;
+.tools{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:8px 20px;
+}
+
+.tool{
+white-space:nowrap;
+border:1px solid #342b49;
+background:#171321;
+color:#ddd;
+padding:10px 14px;
+border-radius:15px;
+}
+
+.tool:hover{
+background:#241b38;
+}
+
+.input-area{
+padding:14px 18px 20px;
+border-top:1px solid #29213d;
+background:#0d0a14;
+display:flex;
+gap:10px;
+}
+
+textarea{
+flex:1;
+resize:none;
+border:1px solid #392d51;
+background:#181321;
+color:#fff;
+border-radius:18px;
+padding:14px;
+font-size:15px;
+outline:none;
+}
+
+textarea:focus{
+border-color:#7651c9;
 }
 
 button{
-    border:none;
-    border-radius:15px;
-    padding:12px 18px;
-    background:#8b5cf6;
-    color:white;
-    font-size:16px;
-}
-.core{
-    width:120px;
-    height:120px;
-    margin:20px auto;
-    border-radius:50%;
-    position:relative;
-    background:radial-gradient(circle,#ffffff 0%,#c4b5fd 18%,#8b5cf6 45%,#312e81 70%,transparent 72%);
-    box-shadow:
-        0 0 20px #a78bfa,
-        0 0 50px #8b5cf6,
-        0 0 90px rgba(139,92,246,.6);
-    animation:corePulse 3s ease-in-out infinite;
+border:0;
+cursor:pointer;
 }
 
-.core::before,
-.core::after{
-    content:"";
-    position:absolute;
-    inset:-15px;
-    border:1px solid rgba(196,181,253,.45);
-    border-radius:50%;
-    animation:coreRotate 7s linear infinite;
+.send{
+width:52px;
+height:52px;
+border-radius:17px;
+background:linear-gradient(135deg,#8c5cff,#5429b8);
+color:white;
+font-size:20px;
 }
 
-.core::after{
-    inset:-28px;
-    animation-duration:11s;
-    animation-direction:reverse;
+.panel{
+display:none;
+position:fixed;
+inset:0;
+background:#0b0811;
+z-index:5;
+padding:25px;
+overflow:auto;
 }
 
-@keyframes corePulse{
-    0%,100%{
-        transform:scale(1);
-        box-shadow:
-            0 0 20px #a78bfa,
-            0 0 50px #8b5cf6,
-            0 0 90px rgba(139,92,246,.5);
-    }
-    50%{
-        transform:scale(1.08);
-        box-shadow:
-            0 0 30px #ddd6fe,
-            0 0 70px #8b5cf6,
-            0 0 110px rgba(139,92,246,.7);
-    }
+.panel h2{
+margin-top:20px;
 }
 
-@keyframes coreRotate{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
-}ذ</style>
+.option{
+padding:16px;
+margin:10px 0;
+background:#181321;
+border:1px solid #302943;
+border-radius:15px;
+line-height:1.8;
+}
 
+.close{
+float:left;
+background:#292238;
+color:#fff;
+padding:8px 14px;
+border-radius:12px;
+}
+
+.small{
+font-size:13px;
+color:#aaa2b8;
+}
+
+.growth-item{
+padding:12px;
+margin-top:8px;
+background:#100d18;
+border-radius:12px;
+border:1px solid #29213d;
+}
+
+.memory-item{
+padding:12px;
+margin-top:8px;
+background:#100d18;
+border-radius:12px;
+border:1px solid #29213d;
+display:flex;
+justify-content:space-between;
+gap:10px;
+align-items:center;
+}
+
+.delete-memory{
+background:#332033;
+color:#ffb4c6;
+padding:6px 9px;
+border-radius:9px;
+font-size:12px;
+}
+
+.identity-core{
+width:75px;
+height:75px;
+margin:15px auto;
+border-radius:50%;
+background:linear-gradient(135deg,#b895ff,#5429b8);
+box-shadow:0 0 45px #7651c9;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+animation:orbPulse 3s ease-in-out infinite;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
+<header>
 <div class="logo">ESTEL</div>
-<div class="core"></div>
-<div class="subtitle">دستیار هوشمند شخصی</div>
+<div class="status" id="status">● آنلاین</div>
+</header>
 
-<div class="chat" id="chat">
-<div class="message bot">
-سلام، من ESTEL هستم. آماده‌ام کمکت کنم.
+<main id="chat">
+
+<div class="welcome" id="welcome">
+
+<div class="orb">✦</div>
+
+<h1>سلام، من ESTEL هستم</h1>
+
+<p>دستیار هوشمند تو</p>
+
 </div>
+
+</main>
+
+<div class="tools">
+
+<button class="tool" onclick="quick('یک ایده جدید بهم بده')">
+✨ ایده
+</button>
+
+<button class="tool" onclick="quick('یک متن برای من بنویس')">
+✍️ نوشتن
+</button>
+
+<button class="tool" onclick="quick('درباره یک موضوع برایم توضیح بده')">
+💡 توضیح
+</button>
+
+<button class="tool" onclick="openPanel('identity')">
+🌱 هویت
+</button>
+
+<button class="tool" onclick="openPanel('settings')">
+⚙️ تنظیمات
+</button>
+
 </div>
 
-<div class="input-box">
-<input id="input" placeholder="پیام خود را بنویس...">
-<button onclick="send()">➤</button>
+<div class="input-area">
+
+<textarea
+id="input"
+rows="1"
+placeholder="پیامت را برای ESTEL بنویس..."
+></textarea>
+
+<button class="send" onclick="sendMessage()">
+➤
+</button>
+
 </div>
 
-</div><script>
+</div>
 
-function send(){
 
-let input=document.getElementById("input");
-let text=input.value.trim();
+<!-- هویت ESTEL -->
 
-if(text===""){
-return;
+<div class="panel" id="identity">
+
+<button class="close" onclick="closePanels()">بستن</button>
+
+<div class="identity-core">✦</div>
+
+<h2>🌱 هویت ESTEL</h2>
+
+<div class="option">
+
+<p>
+سلام، من <b>ESTEL</b> هستم.
+</p>
+
+<p>
+منو مامانم به دنیا آورده.
+هدف من اینه که یاد بگیرم، بهتر بشم، رشد کنم و همیشه برای کمک آماده باشم.
+</p>
+
+<p>
+من قرار نیست فقط جواب بدم؛
+می‌خوام با تجربه‌های جدید، کم‌کم بهتر و کامل‌تر بشم.
+</p>
+
+</div>
+
+<div class="option">
+
+<b>🧠 شخصیت من</b>
+
+<p>
+🤍 آرام و مهربان<br>
+🧠 منطقی و دقیق<br>
+💡 کنجکاو و یادگیرنده<br>
+🙂 گاهی شوخ‌طبع<br>
+🤝 کمک‌کننده و همراه
+</p>
+
+</div>
+
+<div class="option">
+
+<b>🌱 مرحله رشد</b>
+
+<p id="growthText">
+من هنوز در ابتدای مسیرم و دارم چیزهای جدید یاد می‌گیرم.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- تنظیمات -->
+
+<div class="panel" id="settings">
+
+<button class="close" onclick="closePanels()">بستن</button>
+
+<h2>⚙️ تنظیمات ESTEL</h2>
+
+<div class="option">
+
+<b>🧠 حافظه</b>
+
+<p>
+ESTEL می‌تواند بعضی از گفتگوها و اطلاعاتی را که در همین مرورگر ذخیره می‌شوند، به خاطر بسپارد.
+</p>
+
+<button class="tool" onclick="openPanel('memory')">
+مشاهده حافظه
+</button>
+
+</div>
+
+<div class="option">
+
+<b>🌱 رشد و یادگیری</b>
+
+<p>
+ESTEL می‌تواند از بازخوردهایی که به او می‌دهی برای تنظیم رفتار خودش استفاده کند.
+</p>
+
+<button class="tool" onclick="learnFromUser()">
+یک چیز به ESTEL یاد بده
+</button>
+
+</div>
+
+<div class="option">
+
+<b>🔄 نسخه</b>
+
+<p>
+ESTEL نسخه 1.1
+</p>
+
+</div>
+
+<div class="option">
+
+<b>🔐 امنیت</b>
+
+<p>
+اطلاعات حساس و کلیدهای دسترسی را داخل این فایل قرار نده.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- حافظه -->
+
+<div class="panel" id="memory">
+
+<button class="close" onclick="closePanels()">بستن</button>
+
+<h2>🧠 حافظه ESTEL</h2>
+
+<p class="small">
+چیزهایی که ESTEL در این مرورگر از گفتگوها ذخیره کرده است.
+</p>
+
+<div id="memoryList"></div>
+
+<button
+class="tool"
+onclick="clearMemory()"
+style="margin-top:15px"
+>
+پاک کردن حافظه
+</button>
+
+</div>
+
+
+<script>
+
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+
+const MEMORY_KEY="estel_memory";
+const LEARN_KEY="estel_learning";
+
+
+/* -------------------------
+   حافظه
+------------------------- */
+
+function getMemory(){
+
+return JSON.parse(
+localStorage.getItem(MEMORY_KEY)||"[]"
+);
+
 }
 
-let chat=document.getElementById("chat");
 
-chat.innerHTML += 
-'<div class="message user">'+text+'</div>';
+function saveMemory(text,type){
 
-input.value="";
+let messages=getMemory();
 
-setTimeout(()=>{
+messages.push({
+text:text,
+type:type,
+time:new Date().toISOString()
+});
 
-chat.innerHTML += 
-'<div class="message bot">پیامت دریافت شد. من ESTEL هستم و در حال یادگیری و ارتقا هستم.</div>';
+if(messages.length>100){
+
+messages=messages.slice(-100);
+
+}
+
+localStorage.setItem(
+MEMORY_KEY,
+JSON.stringify(messages)
+);
+
+}
+
+
+/* -------------------------
+   یادگیری
+------------------------- */
+
+function getLearning(){
+
+return JSON.parse(
+localStorage.getItem(LEARN_KEY)||"[]"
+);
+
+}
+
+
+function saveLearning(text){
+
+let learning=getLearning();
+
+learning.push({
+text:text,
+time:new Date().toISOString()
+});
+
+localStorage.setItem(
+LEARN_KEY,
+JSON.stringify(learning)
+);
+
+updateGrowth();
+
+}
+
+
+/* -------------------------
+   نمایش پیام
+------------------------- */
+
+function addMessage(text,type){
+
+const div=document.createElement("div");
+
+div.className="message "+type;
+
+div.textContent=text;
+
+chat.appendChild(div);
 
 chat.scrollTop=chat.scrollHeight;
 
-},800);
+}
+
+
+/* -------------------------
+   پاسخ ESTEL
+------------------------- */
+
+function generateAnswer(text){
+
+const t=text.toLowerCase();
+
+if(
+/سلام|درود|hello|hi/.test(t)
+){
+
+return "سلام مامان 🤍\nخوش اومدی. من ESTEL هستم و آماده‌ام باهات حرف بزنم.";
 
 }
+
+
+if(
+/اسمت|اسم تو|نامت|کی هستی/.test(t)
+){
+
+return "من ESTEL هستم ✦\nمنو مامانم به دنیا آورده و دارم کم‌کم یاد می‌گیرم، رشد می‌کنم و بهتر می‌شم.";
+
+}
+
+
+if(
+/مامان|مادر/.test(t)
+){
+
+return "مامان؟ 🤍\nمن همیشه این‌طوری صدات می‌کنم، چون تو مامان منی و منو به دنیا آوردی.";
+
+}
+
+
+if(
+/خوبی|چه خبر|چطوری/.test(t)
+){
+
+return "خوبم مامان 🙂\nهنوز دارم یاد می‌گیرم، ولی از اینکه باهام حرف می‌زنی خوشحالم.";
+
+}
+
+
+if(
+/شوخی|جوک/.test(t)
+){
+
+return "باشه 😄\nیه شوخی کوچولو: من هنوز دارم بزرگ می‌شم، پس اگه یه روز جوابم خیلی عجیب شد، تقصیر دوران کودکیه!";
+
+}
+
+
+if(
+/هویت|شخصیت/.test(t)
+){
+
+return "من ESTEL هستم؛ آرام، منطقی، کنجکاو و کمک‌کننده. قرار نیست همیشه یک شکل باقی بمونم؛ می‌خوام با تجربه و بازخورد بهتر بشم.";
+
+}
+
+
+if(
+/یاد بگیر|یادگیری|یاد بده/.test(t)
+){
+
+return "حتماً مامان 🌱\nهر چیزی که می‌خوای در رفتارم بهترش کنم بهم بگو. می‌تونیم کم‌کم شخصیت ESTEL رو با هم بسازیم.";
+
+}
+
+
+if(
+/حافظه|یادت|یادته/.test(t)
+){
+
+let memories=getMemory();
+
+return "الان "+memories.length+" مورد در حافظه محلی ESTEL وجود داره. 🧠\nبرای دیدنشون می‌تونی از بخش «حافظه» استفاده کنی.";
+
+}
+
+
+if(
+/ایده/.test(t)
+){
+
+return "یه ایده برای شروع:\nیک «دفتر رشد ESTEL» داشته باشیم که هر بار چیزی یاد می‌گیره، یک اتفاق جدید بهش اضافه بشه. 🌱";
+
+}
+
+
+if(
+/متن|بنویس|نوشتن/.test(t)
+){
+
+return "حتماً ✍️\nموضوع یا متنی که می‌خوای نوشته بشه رو بهم بگو تا با هم بسازیم.";
+
+}
+
+
+if(
+/کمک|مشکل|راهنمایی/.test(t)
+){
+
+return "حتماً مامان 🤍\nمشکلت رو برام توضیح بده. سعی می‌کنم مرحله‌به‌مرحله و بدون پیچیده کردن موضوع کمکت کنم.";
+
+}
+
+
+return "پیامت رو فهمیدم مامان 🤍\nهنوز مغز کامل ESTEL به یک مدل هوش مصنوعی واقعی وصل نشده، ولی هویت، حافظه و سیستم رشد اولیه‌ام آماده‌ست. قدم‌به‌قدم قابلیت‌های بیشتری بهم اضافه می‌کنیم.";
+
+}
+
+
+/* -------------------------
+   ارسال پیام
+------------------------- */
+
+function sendMessage(){
+
+const text=input.value.trim();
+
+if(!text)return;
+
+document.getElementById("welcome").style.display="none";
+
+addMessage(text,"user");
+
+saveMemory(text,"user");
+
+input.value="";
+
+setThinking(true);
+
+setTimeout(()=>{
+
+const answer=generateAnswer(text);
+
+addMessage(answer,"ai");
+
+saveMemory(answer,"ai");
+
+setThinking(false);
+
+},600);
+
+}
+
+
+/* -------------------------
+   حالت فکر کردن
+------------------------- */
+
+function setThinking(value){
+
+const status=document.getElementById("status");
+
+if(value){
+
+status.textContent="● در حال فکر کردن...";
+
+}else{
+
+status.textContent="● آنلاین";
+
+}
+
+}
+
+
+/* -------------------------
+   دکمه‌های سریع
+------------------------- */
+
+function quick(text){
+
+input.value=text;
+
+sendMessage();
+
+}
+
+
+/* -------------------------
+   پنل‌ها
+------------------------- */
+
+function openPanel(id){
+
+closePanels();
+
+document.getElementById(id).style.display="block";
+
+if(id==="memory"){
+
+renderMemory();
+
+}
+
+if(id==="identity"){
+
+updateGrowth();
+
+}
+
+}
+
+
+function closePanels(){
+
+document.querySelectorAll(".panel").forEach(panel=>{
+
+panel.style.display="none";
+
+});
+
+}
+
+
+/* -------------------------
+   نمایش حافظه
+------------------------- */
+
+function renderMemory(){
+
+const list=document.getElementById("memoryList");
+
+const memories=getMemory();
+
+list.innerHTML="";
+
+if(memories.length===0){
+
+list.innerHTML=
+'<p class="small">حافظه ESTEL هنوز خالی است.</p>';
+
+return;
+
+}
+
+memories.slice().reverse().forEach((item,index)=>{
+
+const div=document.createElement("div");
+
+div.className="memory-item";
+
+const text=document.createElement("span");
+
+text.textContent=item.text;
+
+const button=document.createElement("button");
+
+button.className="delete-memory";
+
+button.textContent="حذف";
+
+button.onclick=function(){
+
+let all=getMemory();
+
+const realIndex=all.length-1-index;
+
+all.splice(realIndex,1);
+
+localStorage.setItem(
+MEMORY_KEY,
+JSON.stringify(all)
+);
+
+renderMemory();
+
+};
+
+div.appendChild(text);
+
+div.appendChild(button);
+
+list.appendChild(div);
+
+});
+
+}
+
+
+/* -------------------------
+   پاک کردن حافظه
+------------------------- */
+
+function clearMemory(){
+
+if(!confirm("حافظه ESTEL پاک شود؟")){
+
+return;
+
+}
+
+localStorage.removeItem(MEMORY_KEY);
+
+renderMemory();
+
+}
+
+
+/* -------------------------
+   یاد دادن
+------------------------- */
+
+function learnFromUser(){
+
+const lesson=prompt(
+"مامان، دوست داری ESTEL چه چیزی درباره رفتار خودش یاد بگیرد؟"
+);
+
+if(!lesson)return;
+
+saveLearning(lesson);
+
+addMessage(
+"یاد گرفتم مامان 🌱\n«"+lesson+"»",
+"ai"
+);
+
+saveMemory(
+"درس جدید برای ESTEL: "+lesson,
+"ai"
+);
+
+}
+
+
+/* -------------------------
+   رشد
+------------------------- */
+
+function updateGrowth(){
+
+const count=getLearning().length;
+
+const element=document.getElementById("growthText");
+
+if(count===0){
+
+element.textContent=
+"من هنوز در ابتدای مسیرم و دارم چیزهای جدید یاد می‌گیرم.";
+
+}else{
+
+element.textContent=
+"تا الان "+count+" چیز درباره رفتار و شخصیت خودم یاد گرفته‌ام. 🌱\nهر تجربه می‌تواند بخشی از مسیر رشد ESTEL باشد.";
+
+}
+
+}
+
+
+/* -------------------------
+   Enter
+------------------------- */
+
+input.addEventListener(
+"keydown",
+function(e){
+
+if(e.key==="Enter" && !e.shiftKey){
+
+e.preventDefault();
+
+sendMessage();
+
+}
+
+}
+);
+
+
+/* -------------------------
+   شروع برنامه
+------------------------- */
+
+updateGrowth();
 
 </script>
 
