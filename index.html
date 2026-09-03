@@ -90,7 +90,61 @@ button{
     color:white;
     font-size:16px;
 }
-</style>
+.core{
+    width:120px;
+    height:120px;
+    margin:20px auto;
+    border-radius:50%;
+    position:relative;
+    background:radial-gradient(circle,#ffffff 0%,#c4b5fd 18%,#8b5cf6 45%,#312e81 70%,transparent 72%);
+    box-shadow:
+        0 0 20px #a78bfa,
+        0 0 50px #8b5cf6,
+        0 0 90px rgba(139,92,246,.6);
+    animation:corePulse 3s ease-in-out infinite;
+}
+
+.core::before,
+.core::after{
+    content:"";
+    position:absolute;
+    inset:-15px;
+    border:1px solid rgba(196,181,253,.45);
+    border-radius:50%;
+    animation:coreRotate 7s linear infinite;
+}
+
+.core::after{
+    inset:-28px;
+    animation-duration:11s;
+    animation-direction:reverse;
+}
+
+@keyframes corePulse{
+    0%,100%{
+        transform:scale(1);
+        box-shadow:
+            0 0 20px #a78bfa,
+            0 0 50px #8b5cf6,
+            0 0 90px rgba(139,92,246,.5);
+    }
+    50%{
+        transform:scale(1.08);
+        box-shadow:
+            0 0 30px #ddd6fe,
+            0 0 70px #8b5cf6,
+            0 0 110px rgba(139,92,246,.7);
+    }
+}
+
+@keyframes coreRotate{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}ذ</style>
 
 </head>
 
@@ -99,6 +153,7 @@ button{
 <div class="container">
 
 <div class="logo">ESTEL</div>
+<div class="core"></div>
 <div class="subtitle">دستیار هوشمند شخصی</div>
 
 <div class="chat" id="chat">
